@@ -1,8 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectMongoDB } from "../../../../../lib/mongodb";
-import User from "../../../../../models/user";
-import bcrypt from 'bcryptjs'
+import { mysqlPool } from '../../../utils/db'; // เชื่อมต่อ MySQL
+import bcrypt from 'bcryptjs';
 
 const authOptions = {
     providers: [
@@ -14,27 +13,34 @@ const authOptions = {
             const { email, password } = credentials;
 
             try {
-
-                await connectMongoDB();
-                const user = await User.findOne({ email });
+                // ใช้ pool เพื่อเชื่อมต่อกับ MySQL และค้นหาผู้ใช้
+                const [rows] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
+                
+                const user = rows[0]; // ดึงผู้ใช้จากผลลัพธ์
 
                 if (!user) {
-                    return null;
+                    return null; // ไม่พบผู้ใช้
                 }
 
+                // ตรวจสอบความถูกต้องของรหัสผ่าน
                 const passwordMatch = await bcrypt.compare(password, user.password);
 
                 if (!passwordMatch) {
-                    return null;
+                    return null; // รหัสผ่านไม่ถูกต้อง
                 }
 
-                console.log(user);
-                return user;
+                // ส่งคืนข้อมูลผู้ใช้
+                return {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role
+                };
 
             } catch(error) {
-                console.log("Error: ", error)
+                console.log("Error: ", error);
+                return null;
             }
-
           }
         })
     ],
@@ -46,19 +52,17 @@ const authOptions = {
         signIn: "/login"
     },
     callbacks: {
-        async jwt({ token, user, account, profile, isNewUser }) {
-
+        async jwt({ token, user }) {
             if (user) {
                 return {
                     ...token,
-                    id: user._id,
+                    id: user.id,
                     role: user.role
-                }
+                };
             }
-
-            return token
+            return token;
         },
-        async session({ session, user, token }) {
+        async session({ session, token }) {
             return {
                 ...session,
                 user: {
@@ -66,11 +70,11 @@ const authOptions = {
                     id: token.id,
                     role: token.role
                 }
-            }
+            };
         }
     }
-}
+};
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
