@@ -40,18 +40,19 @@ function RegisterPage() {
 
         // Check if the user already exists
         try {
-            const resCheckUser = await fetch("/api/usercheck", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email })
-            });
 
-            const { user } = await resCheckUser.json();
+            // const resCheckUser = await fetch("/api/usercheck", {
+            //     method: "POST",
+            //     headers: { "Content-Type": "application/json" },
+            //     body: JSON.stringify({ email })
+            // });
 
-            if (user) {
-                setError("User already exists.");
-                return;
-            }
+            // const { user } = await resCheckUser.json();
+
+            // if (user) {
+            //     setError("User already exists.");
+            //     return;
+            // }
 
             // Register the user
             const res = await fetch("/api/register", {

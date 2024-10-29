@@ -1,18 +1,23 @@
 import { NextResponse } from 'next/server';
-import { mysqlPool } from '../../../utils/db'; // ใช้ pool จากไฟล์ db.js
-import bcrypt from 'bcryptjs';
+import { mysqlPool } from '../../utils/db'; // ใช้ pool จากไฟล์ db.js
+//import bcrypt from 'bcryptjs';
 
 export async function POST(req) {
+    const promisePool = mysqlPool.promise();
     try {
         const { name, email, password } = await req.json();
-        const hashedPassword = await bcrypt.hash(password, 10);
+        //const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(name)
+        console.log(email)
+        console.log(password)
 
         // เตรียมคำสั่ง SQL สำหรับการบันทึกข้อมูลผู้ใช้
-        const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
-        const values = [name, email, hashedPassword];
+        const query = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`;
+        const values = [name, email, password];
 
         // บันทึกข้อมูลใน MySQL
-        await pool.query(query, values);
+        const registerUser = await promisePool.execute(query, values);
+        console.log(registerUser)
 
         return NextResponse.json({ message: "User registered." }, { status: 201 });
     } catch (error) {
