@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { mysqlPool } from '../../utils/db';// ใช้การเชื่อมต่อ MySQL จาก pool
+import { mysqlPool } from '../../utils/db.js';// ใช้การเชื่อมต่อ MySQL จาก pool
 
 export async function POST(req) {
     const promisePool = mysqlPool.promise();

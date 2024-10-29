@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { mysqlPool } from '../../utils/db'; // ใช้ pool จากไฟล์ db.js
+import { mysqlPool } from '../../utils/db.js'; // ใช้ pool จากไฟล์ db.js
 //import bcrypt from 'bcryptjs';
 
 export async function POST(req) {

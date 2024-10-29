@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-//import { mysqlPool } from '../../utils/db'; // เชื่อมต่อ MySQL
+import { mysqlPool } from '../../../utils/db.js';// ใช้การเชื่อมต่อ MySQL จาก pool
 //import bcrypt from 'bcryptjs';
 
 const authOptions = {
@@ -8,9 +8,10 @@ const authOptions = {
         CredentialsProvider({
           name: 'credentials',
           credentials: {},
-          async authorize(credentials) {
+          async authorize(credentials,req) {
            
             const { email, password } = credentials;
+            const promisePool = mysqlPool.promise();
 
             try {
                 // ใช้ pool เพื่อเชื่อมต่อกับ MySQL และค้นหาผู้ใช้
@@ -35,8 +36,7 @@ const authOptions = {
                 return {
                     id: user.id,
                     name: user.name,
-                    email: user.email,
-                    role: user.role
+                    email: user.email
                 };
 
             } catch(error) {
