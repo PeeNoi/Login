@@ -18,7 +18,7 @@ export default function Home() {
   const [success, setSuccess] = useState("");
 
   if (!session) redirect("/login");
-  console.log(session.user.email)
+  //console.log(session.user.email)
 
   const handleSubmit = async (e) => {
     e.preventDefault();

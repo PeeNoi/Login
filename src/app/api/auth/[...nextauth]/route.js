@@ -23,12 +23,6 @@ const authOptions = {
                     return null; // ไม่พบผู้ใช้
                 }
 
-                // ตรวจสอบความถูกต้องของรหัสผ่าน
-                // const passwordMatch = await bcrypt.compare(password, user.password);
-
-                // if (!passwordMatch) {
-                //     return null; // รหัสผ่านไม่ถูกต้อง
-                // }
                 if(password != user.password){
                     return null;// รหัสผ่านไม่ถูกต้อง
                 }
