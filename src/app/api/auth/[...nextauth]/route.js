@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { mysqlPool } from '../../../utils/db'; // เชื่อมต่อ MySQL
-import bcrypt from 'bcryptjs';
+//import { mysqlPool } from '../../utils/db'; // เชื่อมต่อ MySQL
+//import bcrypt from 'bcryptjs';
 
 const authOptions = {
     providers: [
@@ -14,7 +14,7 @@ const authOptions = {
 
             try {
                 // ใช้ pool เพื่อเชื่อมต่อกับ MySQL และค้นหาผู้ใช้
-                const [rows] = await pool.query(`SELECT * FROM users WHERE email = ?`, [email]);
+                const [rows] = await promisePool.query(`SELECT * FROM users WHERE email = ?`, [email]);
                 
                 const user = rows[0]; // ดึงผู้ใช้จากผลลัพธ์
 
@@ -23,12 +23,14 @@ const authOptions = {
                 }
 
                 // ตรวจสอบความถูกต้องของรหัสผ่าน
-                const passwordMatch = await bcrypt.compare(password, user.password);
+                // const passwordMatch = await bcrypt.compare(password, user.password);
 
-                if (!passwordMatch) {
-                    return null; // รหัสผ่านไม่ถูกต้อง
+                // if (!passwordMatch) {
+                //     return null; // รหัสผ่านไม่ถูกต้อง
+                // }
+                if(password != user.password){
+                    return null;// รหัสผ่านไม่ถูกต้อง
                 }
-
                 // ส่งคืนข้อมูลผู้ใช้
                 return {
                     id: user.id,

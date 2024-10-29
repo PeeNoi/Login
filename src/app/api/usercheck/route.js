@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server';
-import { mysqlPool } from '../../../utils/db';// ใช้การเชื่อมต่อ MySQL จาก pool
+import { mysqlPool } from '../../utils/db';// ใช้การเชื่อมต่อ MySQL จาก pool
 
 export async function POST(req) {
+    const promisePool = mysqlPool.promise();
     try {
+        
         const { email } = await req.json();
-
+        console.log(email)
         // ใช้คำสั่ง SQL เพื่อค้นหาผู้ใช้ใน MySQL
-        const [rows] = await pool.query('SELECT id FROM users WHERE email = ?', [email]);
+        const [rows] = await promisePool.query('SELECT idusers FROM users WHERE email = ?', [email]);
         const user = rows[0]; // เลือกผู้ใช้จากผลลัพธ์
-
+        console.log(rows)
         console.log("User: ", user);
 
         return NextResponse.json({ user });
