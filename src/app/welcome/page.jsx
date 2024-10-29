@@ -18,13 +18,11 @@ export default function Home() {
   const [success, setSuccess] = useState("");
 
   if (!session) redirect("/login");
-  //console.log(session.user.email)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const email = session.user.email;
-      console.log("up")
       const res = await fetch("/api/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

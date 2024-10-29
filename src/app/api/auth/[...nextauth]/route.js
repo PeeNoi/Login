@@ -1,7 +1,6 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { mysqlPool } from '../../../utils/db.js';// ใช้การเชื่อมต่อ MySQL จาก pool
-//import bcrypt from 'bcryptjs';
 
 const authOptions = {
     providers: [

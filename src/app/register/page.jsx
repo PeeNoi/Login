@@ -54,7 +54,6 @@ function RegisterPage() {
                 return;
             }
 
-            // Register the user
             const res = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
