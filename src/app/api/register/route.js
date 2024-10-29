@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import { mysqlPool } from '../../utils/db.js'; // ใช้ pool จากไฟล์ db.js
-//import bcrypt from 'bcryptjs';
+
 
 export async function POST(req) {
     const promisePool = mysqlPool.promise();
     try {
         const { name, email, password } = await req.json();
-        //const hashedPassword = await bcrypt.hash(password, 10);
         console.log(name)
         console.log(email)
         console.log(password)

@@ -17,11 +17,13 @@ function Navbar({ session }) {
         <ul className='flex space-x-4'>
             {!session ? (
                 <>
+                    <li><Link href="/graph">graph</Link></li>
                     <li><Link href="/login">Login</Link></li>
                     <li><Link href="/register">Register</Link></li>
                 </>
             ) : (
                 <>
+                    <li><Link href="/graph">graph</Link></li>
                     <li><Link href="/welcome" className='bg-gray-500 text-white border py-2 px-3 rounded-md text-lg my-2'>Profile</Link></li>
                     <li><a onClick={() => signOut()} className='bg-red-500 text-white border py-2 px-3 rounded-md text-lg my-2'>Logout</a></li>
                 </>
