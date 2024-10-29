@@ -8,7 +8,7 @@ const authOptions = {
         CredentialsProvider({
           name: 'credentials',
           credentials: {},
-          async authorize(credentials,req) {
+          async authorize(credentials) {
            
             const { email, password } = credentials;
             const promisePool = mysqlPool.promise();
@@ -34,8 +34,7 @@ const authOptions = {
                 }
                 // ส่งคืนข้อมูลผู้ใช้
                 return {
-                    id: user.id,
-                    name: user.name,
+                    name: user.username,
                     email: user.email
                 };
 
@@ -59,7 +58,7 @@ const authOptions = {
                 return {
                     ...token,
                     id: user.id,
-                    role: user.role
+
                 };
             }
             return token;
@@ -70,7 +69,7 @@ const authOptions = {
                 user: {
                     ...session.user,
                     id: token.id,
-                    role: token.role
+
                 }
             };
         }
