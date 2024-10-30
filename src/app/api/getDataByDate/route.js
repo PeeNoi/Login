@@ -4,7 +4,7 @@ import { mysqlPool } from '../../utils/db.js';
 export async function POST(req) {
   const promisePool = mysqlPool.promise();
   const { date } = await req.json();
-
+  console.log(date)
   // ตรวจสอบรูปแบบวันที่
   if (!date || typeof date !== 'string') {
     return NextResponse.json({ message: 'Invalid date format' }, { status: 400 });
@@ -15,12 +15,11 @@ export async function POST(req) {
       'SELECT cases, deaths FROM us_covid_data.all_case_day WHERE date = ?',
       [date]
     );
-
+    
     if (results.length > 0) {
       const cases = results[0].cases || 0;
       const deaths = results[0].deaths || 0;
       const recovered = cases - deaths;
-
       return NextResponse.json({ cases, deaths, recovered });
     } else {
       return NextResponse.json(

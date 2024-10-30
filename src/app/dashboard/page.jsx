@@ -27,9 +27,9 @@ export default function DashboardPage() {
     });
 
     const result = await response.json();
-    if (result && result.length > 0) {
-      const totalCases = result[0].cases || 0; // หากไม่มีข้อมูลให้ตั้งค่าเป็น 0
-      const totalDeaths = result[0].deaths || 0; // หากไม่มีข้อมูลให้ตั้งค่าเป็น 0
+    if (result) {
+      const totalCases = result.cases || 0; // หากไม่มีข้อมูลให้ตั้งค่าเป็น 0
+      const totalDeaths = result.deaths || 0; // หากไม่มีข้อมูลให้ตั้งค่าเป็น 0
       setCases(totalCases); // ตั้งค่า cases
       setDeaths(totalDeaths); // ตั้งค่า deaths
     } else {
