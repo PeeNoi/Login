@@ -4,7 +4,6 @@ import { mysqlPool } from '../../utils/db.js';
 export async function POST(req) {
   const promisePool = mysqlPool.promise();
   const { date } = await req.json();
-  console.log(date)
   // ตรวจสอบรูปแบบวันที่
   if (!date || typeof date !== 'string') {
     return NextResponse.json({ message: 'Invalid date format' }, { status: 400 });
