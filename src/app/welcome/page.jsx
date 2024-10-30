@@ -11,8 +11,8 @@ import { redirect } from "next/navigation";
 export default function Home() {
   const [date, setDate] = useState("");
   const [fips, setFips] = useState("");
-  const [case_, setCase] = useState("");
-  const [death, setDeath] = useState("");
+  const [cases, setCases] = useState("");
+  const [deaths, setDeaths] = useState("");
   const [error, setError] = useState("");
   const { data: session } = useSession();
   const [success, setSuccess] = useState("");
@@ -28,7 +28,7 @@ export default function Home() {
       const res = await fetch("/api/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date, fips, case_, death, email})
+        body: JSON.stringify({ date, fips, cases, deaths, email})
     });
     
     if (res.ok) {
@@ -76,13 +76,13 @@ export default function Home() {
           />
           <input
             type="number"
-            onChange={(e) => setCase(e.target.value)}
+            onChange={(e) => setCases(e.target.value)}
             className="narrow-input bg-gray-200 border py-2 px-3 rounded text-lg my-2"
             placeholder="Enter number of cases"
           />
           <input
             type="number"
-            onChange={(e) => setDeath(e.target.value)}
+            onChange={(e) => setDeaths(e.target.value)}
             className="narrow-input bg-gray-200 border py-2 px-3 rounded text-lg my-2"
             placeholder="Enter number of deaths"
           />

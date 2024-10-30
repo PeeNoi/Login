@@ -4,10 +4,10 @@ import { mysqlPool } from '../../utils/db.js'; // ใช้ pool จากไฟ
 export async function POST(req) {
     const promisePool = mysqlPool.promise();
     try {
-        const { date, fips, case_, death, email } = await req.json();
+        const { date, fips, cases, deaths, email } = await req.json();
         // เตรียมคำสั่ง SQL สำหรับการบันทึกข้อมูลผู้ใช้
-        const query = `INSERT INTO us_2024 (date, fips, case_, death, email) VALUES (?, ?, ?, ?, ?)`;
-        const values = [date, fips, case_, death, email];
+        const query = `INSERT INTO Input_table (date, fips, cases, deaths, email) VALUES (?, ?, ?, ?, ?)`;
+        const values = [date, fips, cases, deaths, email];
 
         // บันทึกข้อมูลใน MySQL
         const updateData = await promisePool.execute(query, values);

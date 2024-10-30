@@ -6,7 +6,7 @@ export async function POST(req) {
   const { date } = await req.json();
 
   try {
-    const [results] = await promisePool.query('SELECT cases, deaths FROM us_covid_data.us_all WHERE date = ?', [date]);
+    const [results] = await promisePool.query('SELECT cases, deaths FROM us_covid_data.all_case_day WHERE date = ?', [date]);
     return NextResponse.json(results);
   } catch (error) {
     console.error(error);
