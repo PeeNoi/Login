@@ -8,7 +8,7 @@ export async function POST(req) {
         const { email } = await req.json();
         console.log(email)
         // ใช้คำสั่ง SQL เพื่อค้นหาผู้ใช้ใน MySQL
-        const [rows] = await promisePool.query('SELECT idusers FROM users WHERE email = ?', [email]);
+        const [rows] = await promisePool.query('SELECT email FROM users WHERE email = ?', [email]);
         const user = rows[0]; // เลือกผู้ใช้จากผลลัพธ์
         console.log(rows)
         console.log("User: ", user);

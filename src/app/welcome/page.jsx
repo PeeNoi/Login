@@ -18,11 +18,13 @@ export default function Home() {
   const [success, setSuccess] = useState("");
 
   if (!session) redirect("/login");
+  console.log(session.user.email)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const email = session.user.email;
+      console.log("up")
       const res = await fetch("/api/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,7 +52,7 @@ export default function Home() {
           <h3 className="text-5xl">Welcome, {session?.user?.name}</h3>
           <p className="text-2xl mt-3">Your email address: {session?.user?.email}</p>
         </div>
-
+  
         <hr className="my-3" />
         {error && <p className="text-red-500">{error}</p>}
         {success && (
@@ -58,34 +60,35 @@ export default function Home() {
             {success}
           </div>
         )}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex flex-col items-center"> {/* Center the form items */}
           <input 
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               min="2020-01-01" max="2024-12-31"
+              className="narrow-input my-2"
           />
           <input
             type="text"
             onChange={(e) => setFips(e.target.value)}
-            className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
+            className="narrow-input bg-gray-200 border py-2 px-3 rounded text-lg my-2"
             placeholder="Fips Code"
           />
           <input
             type="number"
             onChange={(e) => setCase(e.target.value)}
-            className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-            placeholder="Enter number of case"
+            className="narrow-input bg-gray-200 border py-2 px-3 rounded text-lg my-2"
+            placeholder="Enter number of cases"
           />
           <input
             type="number"
             onChange={(e) => setDeath(e.target.value)}
-            className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-            placeholder="Enter number of death"
+            className="narrow-input bg-gray-200 border py-2 px-3 rounded text-lg my-2"
+            placeholder="Enter number of deaths"
           />
           <button
             type="submit"
-            className="bg-green-500 text-white border py-2 px-3 rounded text-lg my-2"
+            className="bg-[#73C088] text-white py-2 px-4 rounded-md hover:bg-[#459866] transition-colors duration-300"
           >
             Submit
           </button>
@@ -94,6 +97,6 @@ export default function Home() {
         <Footer />
       </Container>
     </main>
-
   );
+  
 }

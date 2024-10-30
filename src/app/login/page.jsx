@@ -64,7 +64,7 @@ function LoginPage() {
                             />
                             <button
                                 type="submit"
-                                className="bg-green-500 text-white border py-2 px-3 rounded text-lg my-2"
+                                className="bg-[#73C088] text-white py-2 px-4 rounded-md hover:bg-[#459866] transition-colors duration-300'"
                             >
                                 Sign In
                             </button>

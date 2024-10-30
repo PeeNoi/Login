@@ -1,6 +1,7 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { mysqlPool } from '../../../utils/db.js';// ใช้การเชื่อมต่อ MySQL จาก pool
+//import bcrypt from 'bcryptjs';
 
 const authOptions = {
     providers: [
@@ -22,6 +23,12 @@ const authOptions = {
                     return null; // ไม่พบผู้ใช้
                 }
 
+                // ตรวจสอบความถูกต้องของรหัสผ่าน
+                // const passwordMatch = await bcrypt.compare(password, user.password);
+
+                // if (!passwordMatch) {
+                //     return null; // รหัสผ่านไม่ถูกต้อง
+                // }
                 if(password != user.password){
                     return null;// รหัสผ่านไม่ถูกต้อง
                 }

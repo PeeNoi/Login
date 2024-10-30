@@ -54,6 +54,7 @@ function RegisterPage() {
                 return;
             }
 
+            // Register the user
             const res = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -123,7 +124,7 @@ function RegisterPage() {
                                 className='w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2' 
                                 placeholder='Confirm your password' 
                             />
-                            <button type='submit' className='bg-green-500 text-white border py-2 px-3 rounded text-lg my-2'>
+                            <button type='submit' className='bg-[#73C088] text-white py-2 px-4 rounded-md hover:bg-[#459866] transition-colors duration-300'>
                                 Sign Up
                             </button>
                         </form>
