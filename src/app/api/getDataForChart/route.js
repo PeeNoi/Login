@@ -20,7 +20,6 @@ export async function POST(req) {
     };
 
     const transformedData1 = transformDatesMethod1(results);
-    console.log(transformedData1); // ดูข้อมูลที่ถูกแปลง
     return NextResponse.json(transformedData1); // ส่งข้อมูลที่ถูกแปลงกลับไป
   } catch (error) {
     console.error(error);
