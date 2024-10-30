@@ -142,7 +142,7 @@ export default function DashboardPage() {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {filteredData.map((result, index) => (
-                      <tr key={index}>
+                      <tr>
                         <td className="px-6 py-4 whitespace-nowrap">{result.date}</td>
                         <td className="px-6 py-4 whitespace-nowrap">{result.cases}</td>
                         <td className="px-6 py-4 whitespace-nowrap">{result.deaths}</td>
