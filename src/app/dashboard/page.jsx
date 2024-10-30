@@ -45,11 +45,11 @@ export default function DashboardPage() {
   }
   
 
-  const lineSearch = async () => {
+  const lineSearch = async (date_start,date_end) => {
     const response = await fetch('/api/getDataForChart', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-
+      body: JSON.stringify({date_start,date_end})
     });
 
     const result = await response.json();

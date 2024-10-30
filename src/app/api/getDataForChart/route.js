@@ -3,9 +3,10 @@ import { mysqlPool } from '../../utils/db.js';// ปรับให้เข้�
 
 export async function POST(req) {
   const promisePool = mysqlPool.promise();
+  const { date_start,date_end } = await req.json();
 
   try {
-    const [results] = await promisePool.query('SELECT * FROM us_covid_data.all_case_day where date between \'2023-01-01\' and \'2023-12-30\' limit 10;');
+    const [results] = await promisePool.query('SELECT * FROM us_covid_data.all_case_day where date between ? and ?;',[date_start,date_end]);
     const transformDatesMethod1 = (data) => {
       return data.map(item => ({
         ...item,
