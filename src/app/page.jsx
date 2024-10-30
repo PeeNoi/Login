@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Container from "./components/Container";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer.jsx";
 import NextLogo from '../../public/CovidLogo.png'
 import { useSession } from "next-auth/react";
 
@@ -22,7 +21,7 @@ export default function Home() {
             <h3 className="text-3xl mt-[-3rem]">Welcome to an exposition of Covid-19</h3>
             <p className="text-2xl mt-3">Statistics in the United States.</p>
           </div>
-        <Footer />
+        
       </Container>
     </main>
     

@@ -104,7 +104,7 @@ const DateInputForm = ({ onSearch }) => {
         />
         <button type="button" onClick={incrementYear} className="p-1 bg-gray-300 rounded">+</button>
       </div>
-      <button type="submit" className="p-2 bg-blue-500 text-white rounded">
+      <button type="submit" className="p-2 bg-[#397d54] text-white py-2 px-4 rounded-md hover:bg-[#235d3a] transition-colors duration-300">
         Search
       </button>
     </form>

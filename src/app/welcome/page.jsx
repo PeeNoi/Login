@@ -1,10 +1,7 @@
 "use client"
-import React, { useState, useEffect } from 'react';
-import Image from "next/image";
+import React, { useState } from 'react';
 import Container from "../components/Container";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer.jsx";
-import NextLogo from '../../../public/CovidLogo.png'
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
@@ -18,26 +15,24 @@ export default function Home() {
   const [success, setSuccess] = useState("");
 
   if (!session) redirect("/login");
-  console.log(session.user.email)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const email = session.user.email;
-      console.log("up")
       const res = await fetch("/api/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date, fips, cases, deaths, email})
-    });
+        body: JSON.stringify({ date, fips, cases, deaths, email })
+      });
     
-    if (res.ok) {
+      if (res.ok) {
         setError("");
         setSuccess("Update data successfully!");
         e.target.reset(); // Clears the form
-    } else {
+      } else {
         setError("Update data failed.");
-    }
+      }
     } catch (error) {
       console.error("Error during updating: ", error);
       setError("An unexpected error occurred. Please try again.");
@@ -45,10 +40,10 @@ export default function Home() {
   }
 
   return (
-    <main>
+    <main className="flex-grow"> {/* เพิ่ม flex-grow */}
       <Container>
         <Navbar session={session} />
-        <div className="flex-grow text-center p-10">
+        <div className="text-center p-10">
           <h3 className="text-5xl">Welcome, {session?.user?.name}</h3>
           <p className="text-2xl mt-3">Your email address: {session?.user?.email}</p>
         </div>
@@ -60,13 +55,13 @@ export default function Home() {
             {success}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="flex flex-col items-center"> {/* Center the form items */}
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
           <input 
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              min="2020-01-01" max="2024-12-31"
-              className="narrow-input my-2"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            min="2020-01-01" max="2024-12-31"
+            className="narrow-input my-2"
           />
           <input
             type="text"
@@ -94,9 +89,8 @@ export default function Home() {
           </button>
         </form>
         <hr className="my-3" />
-        <Footer />
+        {/* <Footer /> */}
       </Container>
     </main>
   );
-  
 }

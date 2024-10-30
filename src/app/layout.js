@@ -1,3 +1,4 @@
+// RootLayout.js
 import { AuthProvider } from "./Providers";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -11,12 +12,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className="h-full">
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
         <AuthProvider>
-          {children}
+          <main className="flex-grow">{children}</main> {/* ให้ main ใช้พื้นที่ที่เหลือ */}
+          <footer className="bg-[#457373] p-5 text-white text-center">
+            <p>Covid-19 data in the US</p> {/* Footer ของคุณ */}
+          </footer>
         </AuthProvider>
       </body>
     </html>
   );
 }
+

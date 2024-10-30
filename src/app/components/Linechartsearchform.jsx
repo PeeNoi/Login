@@ -25,7 +25,7 @@ const Linechartsearchform = ({ onSearch }) => {
               min="2020-01-01" max="2023-3-30"
               className="narrow-input my-2"
           />
-            <button type="submit" className="p-2 bg-blue-500 text-white rounded">Search</button>
+            <button type="submit" className="p-2 bg-[#397d54] text-white py-2 px-4 rounded-md hover:bg-[#235d3a] transition-colors duration-300 mx-4">Search</button>
         </form>
     );
       

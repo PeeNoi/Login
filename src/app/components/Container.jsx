@@ -1,11 +1,12 @@
-import React from 'react'
+// Container.js
+import React from 'react';
 
-function Container({ children }) {
+const Container = ({ children }) => {
   return (
-    <div className='flex flex-col min-h-screen'>
-        {children}
+    <div className="flex flex-col min-h-screen"> {/* ใช้ Flexbox และ min-h-screen */}
+      {children}
     </div>
-  )
-}
+  );
+};
 
-export default Container
+export default Container;

@@ -1,9 +1,8 @@
-"use client"; 
+"use client";
 
 import { useState, useEffect } from 'react';
 import Container from "../components/Container";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer.jsx";
 import DateInputForm from '../components/DateInputForm';
 import Linechartsearchform from '../components/Linechartsearchform';
 import { useSession } from 'next-auth/react';
@@ -18,8 +17,7 @@ export default function DashboardPage() {
   const [sortBy, setSortBy] = useState("date");
   const [filterBy, setFilterBy] = useState("");
   const [showDetails, setShowDetails] = useState(null); // สำหรับ Drill-down
-  let displaycase
-  let displaydeath
+  const [filteredData, setFilteredData] = useState([]); // State สำหรับข้อมูลที่กรองและจัดเรียง
 
   const handleSearch = async (date) => {
     const response = await fetch('/api/getDataByDate', {
@@ -29,45 +27,48 @@ export default function DashboardPage() {
     });
 
     const result = await response.json();
-    if(result){
-      displaycase = result.map(function(data){
-        return(<p key = {0}>{data.cases}</p>)
-      })
-      displaydeath = result.map(function(data){
-        return(<h key = {1}>{data.deaths}</h>)
-      })
-      setCases(displaycase);
-      setDeaths(displaydeath);
+    if (result && result.length > 0) {
+      const totalCases = result[0].cases || 0; // หากไม่มีข้อมูลให้ตั้งค่าเป็น 0
+      const totalDeaths = result[0].deaths || 0; // หากไม่มีข้อมูลให้ตั้งค่าเป็น 0
+      setCases(totalCases); // ตั้งค่า cases
+      setDeaths(totalDeaths); // ตั้งค่า deaths
+    } else {
+      console.log("not found");
+      setCases(0); // ตั้งค่าเป็น 0 ถ้าไม่พบข้อมูล
+      setDeaths(0); // ตั้งค่าเป็น 0 ถ้าไม่พบข้อมูล
     }
-    else{
-      console.log("not found")
-    }
-  }
-  
+  };
 
-  const lineSearch = async (date_start,date_end) => {
+  const lineSearch = async (date_start, date_end) => {
     const response = await fetch('/api/getDataForChart', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({date_start,date_end})
+      body: JSON.stringify({ date_start, date_end })
     });
 
     const result = await response.json();
-    setSearchResult(result);
+    if (result && result.length > 0) {
+      setSearchResult(result); // ตั้งค่า searchResult จากข้อมูลที่ได้
+    } else {
+      setSearchResult([]); // หากไม่มีข้อมูลให้ตั้งค่าเป็นอาร์เรย์ว่าง
+    }
   };
 
-  // Sorting ฟังก์ชัน
-  const sortedData = [...searchResult].sort((a, b) => {
-    if (sortBy === "cases") return b.cases - a.cases;
-    if (sortBy === "deaths") return b.deaths - a.deaths;
-    return new Date(b.date) - new Date(a.date);
-  });
+  // Effect สำหรับจัดการการกรองและการจัดเรียง
+  useEffect(() => {
+    const sortedData = [...searchResult].sort((a, b) => {
+      if (sortBy === "cases") return b.cases - a.cases;
+      if (sortBy === "deaths") return b.deaths - a.deaths;
+      return new Date(b.date) - new Date(a.date);
+    });
 
-  // Filtering ฟังก์ชัน
-  const filteredData = sortedData.filter(item => {
-    if (!filterBy) return true;
-    return item.cases >= filterBy;
-  });
+    const filteredData = sortedData.filter(item => {
+      if (!filterBy) return true;
+      return item.cases >= filterBy;
+    });
+
+    setFilteredData(filteredData); // อัปเดตข้อมูลที่กรองและจัดเรียง
+  }, [searchResult, sortBy, filterBy]); // อัปเดตเมื่อ searchResult, sortBy หรือ filterBy เปลี่ยนแปลง
 
   return (
     <main>
@@ -82,22 +83,23 @@ export default function DashboardPage() {
             <div className="item zone1">
               <div className="itemzone1">
                 <p className="text-2xl mb-10 bg-[#ffa242] text-white p-3 rounded-lg">CASE</p>
-                <p className="text-3xl text-black" value ={cases} >{cases}</p>
+                <p className="text-5xl text-black text-center mt-20">{cases}</p>
               </div>
               <div className="itemzone1">
                 <p className="text-2xl mb-10 bg-[#dc493f] text-white p-3 rounded-lg">DEATH</p>
-                <p className="text-3xl text-black" value ={deaths} >{deaths}</p>
+                <p className="text-5xl text-black text-center mt-20">{deaths}</p>
               </div>
               <div className="itemzone1">
-                <p className="text-2xl mb-10 bg-[#5d8d73] text-white p-3 rounded-lg">RECOVERED</p>
-                <p className="text-3xl text-white">{cases + deaths}</p>
+                <p className="text-2xl mb-2 bg-[#5d8d73] text-white p-3 rounded-lg text-center">RECOVERED</p>
+                <p className="text-5xl text-black text-center mt-20">{(cases && deaths) ? (cases - deaths) : 0}</p>
               </div>
             </div>
+
             <Linechartsearchform onSearch={lineSearch} />
 
             {/* Zone2: แสดงกราฟเส้น */}
             <div className="item zone2">
-              <LineChart width={1000} height={300} data={searchResult}>
+              <LineChart width={1000} height={300} data={filteredData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
@@ -108,7 +110,7 @@ export default function DashboardPage() {
               </LineChart>
             </div>
 
-            {/* Zone3: แสดงตารางผลลัพธ์ */}
+            {/* Zone3: Search Results */}
             <div className="item zone3">
               <div className="itemzone3">
                 <h2 className="text-2xl mb-5">Search Results</h2>
@@ -130,36 +132,38 @@ export default function DashboardPage() {
                   className="ml-2 p-2 border"
                 />
 
-                {/* ตารางข้อมูล */}
-                <table className="min-w-full divide-y divide-gray-200 mt-5">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cases</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deaths</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredData.map((result, index) => (
-                      <tr key = {index}>
-                        <td className="px-6 py-4 whitespace-nowrap">{result.date}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">{result.cases}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">{result.deaths}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <button
-                            onClick={() => setShowDetails(showDetails === index ? null : index)}
-                            className="bg-blue-500 text-white px-3 py-1 rounded"
-                          >
-                            {showDetails === index ? "Hide Details" : "Show Details"}
-                          </button>
-                        </td>
+                {/* Table for Results */}
+                <div className="overflow-y-auto">
+                  <table className="min-w-full divide-y divide-gray-200 mt-5">
+                    <thead>
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cases</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deaths</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {filteredData.map((result, index) => (
+                        <tr key={index}>
+                          <td className="px-6 py-4 whitespace-nowrap">{result.date}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">{result.cases}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">{result.deaths}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <button
+                              onClick={() => setShowDetails(showDetails === index ? null : index)}
+                              className="bg-blue-500 text-white px-3 py-1 rounded"
+                            >
+                              {showDetails === index ? "Hide Details" : "Show Details"}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
 
-                {/* แสดงรายละเอียดเพิ่มเติม (Drill-down) */}
+                {/* Show Additional Details */}
                 {showDetails !== null && (
                   <div className="p-5 bg-gray-100 rounded mt-5">
                     <h3 className="text-xl font-bold mb-3">Details for {filteredData[showDetails].date}</h3>
@@ -171,10 +175,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-        <Footer />
       </Container>
     </main>
   );
 }
-
-//export default DashboardPage;

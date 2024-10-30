@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Container from "../components/Container";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer.jsx";
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -80,7 +79,6 @@ function LoginPage() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </Container>
     );
 }

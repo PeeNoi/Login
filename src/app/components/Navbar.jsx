@@ -43,7 +43,7 @@ function Navbar({ session }) {
                             Dashboard</Link>
                     </li>
                     <li>
-                        <Link href="/welcome" className='bg-gray-500 text-white border py-2 px-3 rounded-md text-lg my-2'>
+                        <Link href="/welcome" className='bg-[#bc8fd0] text-white py-2 px-4 rounded-md hover:bg-[#957dad] transition-colors duration-300'>
                             Profile
                         </Link>
                     </li>
