@@ -31,10 +31,10 @@ export default function DashboardPage() {
     const result = await response.json();
     if(result){
       displaycase = result.map(function(data){
-        return(<h>{data.cases}</h>)
+        return(<p key = {0}>{data.cases}</p>)
       })
       displaydeath = result.map(function(data){
-        return(<h>{data.deaths}</h>)
+        return(<h key = {1}>{data.deaths}</h>)
       })
       setCases(displaycase);
       setDeaths(displaydeath);
@@ -142,7 +142,7 @@ export default function DashboardPage() {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {filteredData.map((result, index) => (
-                      <tr>
+                      <tr key = {index}>
                         <td className="px-6 py-4 whitespace-nowrap">{result.date}</td>
                         <td className="px-6 py-4 whitespace-nowrap">{result.cases}</td>
                         <td className="px-6 py-4 whitespace-nowrap">{result.deaths}</td>
