@@ -14,7 +14,7 @@
 .item{
 
     width: 100%;
-    height: 350px;
+    height: 250px;
     gap:10px 
 }
 
@@ -54,9 +54,12 @@
     align-items: center;
 }
 .zone3{
+    min-height: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    margin-top: 50px; /* เพิ่มระยะห่างจากขอบบน */
 }
 .itemzone3 {
     max-height: 300px; /* Set this value according to your layout */

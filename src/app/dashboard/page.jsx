@@ -83,15 +83,15 @@ export default function DashboardPage() {
             <div className="item zone1">
               <div className="itemzone1">
                 <p className="text-2xl mb-10 bg-[#ffa242] text-white p-3 rounded-lg">CASE</p>
-                <p className="text-5xl text-black text-center mt-20">{cases}</p>
+                <p className="text-4xl text-black text-center mt-12">{cases}</p>
               </div>
               <div className="itemzone1">
                 <p className="text-2xl mb-10 bg-[#dc493f] text-white p-3 rounded-lg">DEATH</p>
-                <p className="text-5xl text-black text-center mt-20">{deaths}</p>
+                <p className="text-4xl text-black text-center mt-12">{deaths}</p>
               </div>
               <div className="itemzone1">
-                <p className="text-2xl mb-2 bg-[#5d8d73] text-white p-3 rounded-lg text-center">RECOVERED</p>
-                <p className="text-5xl text-black text-center mt-20">{(cases && deaths) ? (cases - deaths) : 0}</p>
+                <p className="text-2xl mb-2 bg-[#5d8d73] text-white p-3 rounded-lg text-center">RECOVER</p>
+                <p className="text-4xl text-black text-center mt-12">{(cases && deaths) ? (cases - deaths) : 0}</p>
               </div>
             </div>
 
