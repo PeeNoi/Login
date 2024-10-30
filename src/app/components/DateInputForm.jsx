@@ -23,8 +23,8 @@ const DateInputForm = ({ onSearch }) => {
       setError('Month must be between 1 and 12.');
       return;
     }
-    if (yearNum < 2020 || yearNum > 2023) {
-      setError('Year must be between 2020 and 2023.');
+    if (yearNum < 2023 || yearNum > 2024) {
+      setError('Year must be between 2023 and 2024.');
       return;
     }
   
@@ -58,11 +58,11 @@ const DateInputForm = ({ onSearch }) => {
   };
 
   const incrementYear = () => {
-    setYear((prev) => (prev === '2020' ? '2021' : prev === '2021' ? '2022' : '2023')); // Increment year within range
+    setYear((prev) => (prev === '2023' ? '2024' : '2024')); // Increment year within range
   };
 
   const decrementYear = () => {
-    setYear((prev) => (prev === '2023' ? '2022' : prev === '2022' ? '2021' : '2020')); // Decrement year within range
+    setYear((prev) => (prev === '2024' ? '2023' : '2023')); // Decrement year within range
   };
 
   return (
@@ -96,7 +96,7 @@ const DateInputForm = ({ onSearch }) => {
         <button type="button" onClick={decrementYear} className="p-1 bg-gray-300 rounded">-</button>
         <input
           type="number"
-          placeholder="Year (2020-2023)" // Placeholder แสดงข้อความที่ต้องการ
+          placeholder="Year (2023-2024)" // Placeholder แสดงข้อความที่ต้องการ
           value={year}
           onChange={(e) => setYear(e.target.value)}
           required

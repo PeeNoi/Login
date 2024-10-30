@@ -5,11 +5,12 @@ import Container from "../components/Container";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer.jsx";
 import DateInputForm from '../components/DateInputForm';
+import Linechartsearchform from '../components/Linechartsearchform';
 import { useSession } from 'next-auth/react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
 import "../components/dashboard.css";
 
-function DashboardPage() {
+export default function DashboardPage() {
   const { data: session } = useSession();
   const [searchResult, setSearchResult] = useState([]);
   const [cases, setCases] = useState(0);
@@ -17,21 +18,42 @@ function DashboardPage() {
   const [sortBy, setSortBy] = useState("date");
   const [filterBy, setFilterBy] = useState("");
   const [showDetails, setShowDetails] = useState(null); // สำหรับ Drill-down
+  let displaycase
+  let displaydeath
 
   const handleSearch = async (date) => {
     const response = await fetch('/api/getDataByDate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date }),
+      body: JSON.stringify({ date })
+    });
+
+    const result = await response.json();
+    if(result){
+      displaycase = result.map(function(data){
+        return(<h>{data.cases}</h>)
+      })
+      displaydeath = result.map(function(data){
+        return(<h>{data.deaths}</h>)
+      })
+      setCases(displaycase);
+      setDeaths(displaydeath);
+    }
+    else{
+      console.log("not found")
+    }
+  }
+  
+
+  const lineSearch = async () => {
+    const response = await fetch('/api/getDataForChart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+
     });
 
     const result = await response.json();
     setSearchResult(result);
-
-    const totalCases = result.reduce((acc, item) => acc + item.cases, 0);
-    const totalDeaths = result.reduce((acc, item) => acc + item.deaths, 0);
-    setCases(totalCases);
-    setDeaths(totalDeaths);
   };
 
   // Sorting ฟังก์ชัน
@@ -60,21 +82,22 @@ function DashboardPage() {
             <div className="item zone1">
               <div className="itemzone1">
                 <p className="text-2xl mb-10 bg-[#ffa242] text-white p-3 rounded-lg">CASE</p>
-                <p className="text-3xl text-white">{cases}</p>
+                <p className="text-3xl text-black" value ={cases} >{cases}</p>
               </div>
               <div className="itemzone1">
                 <p className="text-2xl mb-10 bg-[#dc493f] text-white p-3 rounded-lg">DEATH</p>
-                <p className="text-3xl text-white">{deaths}</p>
+                <p className="text-3xl text-black" value ={deaths} >{deaths}</p>
               </div>
               <div className="itemzone1">
                 <p className="text-2xl mb-10 bg-[#5d8d73] text-white p-3 rounded-lg">RECOVERED</p>
                 <p className="text-3xl text-white">{cases + deaths}</p>
               </div>
             </div>
+            <Linechartsearchform onSearch={lineSearch} />
 
             {/* Zone2: แสดงกราฟเส้น */}
             <div className="item zone2">
-              <LineChart width={500} height={300} data={filteredData}>
+              <LineChart width={1000} height={300} data={searchResult}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
@@ -154,4 +177,4 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+//export default DashboardPage;
